@@ -4,7 +4,11 @@
 > Biblz - электронная библиотека с удобной читалкой
 
 
-https://github.com/BCanary/biblz/assets/59798021/408c5d7b-71a4-4e13-8852-34a3ef125be2
+
+
+https://github.com/BCanary/Biblz/assets/59798021/359328e9-77f3-46ac-9511-b51a957bdbf9
+
+
 
 
 # Технологии
