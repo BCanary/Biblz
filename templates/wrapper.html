@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>{% block title %}Библз{% endblock %}</title>
+	<meta charset="UTF-8">
+	<link href="{% static "css/main.css" %}" rel="stylesheet" type="text/css">
+	<link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
+	<meta http-equiv="Cache-Control" content="private">
+	{% block links %}
+	{% endblock %}
+	<title>Document</title>
+</head>
+<body>
+	{% block allpage %}
+	{% endblock %}
+	<input class="black-radio-button" type="checkbox" id="black-radio-button" name="dark-button"></input>
+	<div class="black-background"></div>
+
+	<div class="registration-block-wrapper" style="color: white; display: flex; flex-direction: column; display: none;" id="site-error">
+		<strong id="site-error-text" style="max-width: 100%;"></strong>
+		<input type="button" onclick="unshowError()" class="site-error-submit" value="Понятно">
+	</div>
+
+	<form class="registration-block-wrapper" id="registration">
+		{% csrf_token %}
+		<div class="registration-block" id="registration-block">
+			<div class="registration-block-up">
+				<div class="registration-block-close" onclick="showRegistration()">Закрыть</div>
+			</div>
+			<div class="registration-block-center">
+				<div class="registration-error" id="regestration-error"><h3>Ошибка</h3><p class="error-box" id="error-box">Возникла ошибка</p></div>
+				<input autocomplete="off" type="input" name="login" id="login" class="registration-input" placeholder="Логин" required>
+				<input autocomplete="off" type="input" name="email" id="email" class="registration-input" placeholder="Почта" required>
+				<input autocomplete="off" type="input" name="password-raw" id="password-raw" class="registration-input" placeholder="Пароль" required>
+				<input autocomplete="off" type="password" name="password" class="registration-input" id="password" placeholder="Повторите пароль" required>
+			</div>
+			<div class="registration-block-bottom">
+				<input type="button" onclick="doRegistration()" class="registration-input-submit" value="Создать аккаунт">
+			</div>
+		</div>
+		<div class="registration-block login-block" id="login-block" style="display: none;">
+			<div class="registration-block-up">
+				<div class="registration-block-close" onclick="showLogin()">Закрыть</div>
+			</div>
+			<div class="registration-block-center">
+				<div class="registration-error" id="login-error"><h3>Ошибка</h3><p class="error-box" id="login-error-box">Возникла ошибка</p></div>
+				<input autocomplete="off" type="input" name="login-login" id="login-login" class="registration-input" placeholder="Логин или почта" required>
+				<input autocomplete="off" type="password" name="login-password" id="login-password" class="registration-input" placeholder="Пароль" required>
+			</div>
+			<div class="registration-block-bottom">
+				<input type="button" onclick="doLogin()" class="registration-input-submit" value="Войти">
+			</div>
+		</div>
+	</form>
+	
+	<script src="{% static "js/api_script.js" %}"></script>
+	<div class="top-block" id="top-block">
+			<header id="header">
+				<a href="/" class="logo">
+					<img src="{% static "images/logo.svg" %}" class="logo-image" alt="Logo"></img>
+				</a>
+				<form action="/search" class="search-block">
+					<div class="search">
+						<div class="pre-search-input" style="display: none;"></div>
+						<input type="text" name="query" class="search-input" style="padding-left: 20px; border-radius: 10px 0px 0px 10px;" placeholder="Поиск">
+						<input type="submit" name="button" class="submit-search" value="Найти">
+					</div>
+				</form>
+				<div class="user">
+					{% if logged_in %}
+						<a href="/user/{{ active_user.id }}" class="user-image" style="background-image: url({{ profile_image }}); background-size: auto 100%; background-position: center;"></a>
+					{% endif %}
+					<div class="login-register-block">
+						{% if not logged_in %}
+							<div class="button-user-block">
+								<a href="#"><input type="button" name="login" onclick="showLogin()" class="default-input-button" value="Войти"/></a>
+							</div>
+							<div class="button-user-block">
+								<a href="#"><input type="button" name="login" onclick="showRegistration()" class="default-input-button" value="Зарегистрироваться"/></a>
+							</div>
+						{% else %}
+							<div class="full-name">
+								{{ active_user.first_name }} {{ active_user.middle_name }} {{ active_user.last_name }}
+							</div>
+							<div class="button-user-block">
+								<a href="/user/settings"><input type="button" name="login" class="default-input-button" value="Настройки профиля"/></a>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+				<label for="show-menu-input" class="show-menu">
+					Меню		
+				</label>
+			</header>
+	</div>
+	<input type="checkbox" name="menu" style="display: none;" id="show-menu-input" class="show-menu-input">
+	<div class="menu">
+		<label for="show-menu-input" class="unshow-menu">
+			Скрыть		
+		</label>
+		<div class="user-short-menu">
+			{% if logged_in %}
+				<img class="user-image" src="{{profile_image}}">
+				<div class="login-register-block">
+				<div class="button-user-block">
+					<a href="/user/settings"><div class="default-input-button">Настройки профиля</div></a>
+				</div>
+			</div>
+			{% else %}
+				<img class="user-image" src="{% static "images/default_profile.png" %}">
+				<div class="login-register-block">
+				<div class="button-user-block">
+					<a href="#"><label for="show-menu-input" type="button" onclick="showLogin()" name="login" class="default-input-button" value="Войти">Войти</label></a>
+				</div>
+				<div class="button-user-block">
+					<a href="#"><label for="show-menu-input" type="button" onclick="showRegistration()" name="login" class="default-input-button" value="Зарегистрироваться">Зарегистрироваться</label></a>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	{% block main %}
+	-Как будет ошибка на английском?
+	-Error
+	-404?
+	-... 
+	-...:)
+	-Ну типа...
+	{% endblock %}
+
+	<!-- FOOTER START -->
+	<footer>
+		<div>Copyright &copy; Имя Фамилия, БИБЛЗ, 2020-2021. Все права защищены.</div>
+		<a href="https://vk.com/id0123456" style="color: black; flex: 1; text-align: right;">ВКонтакте</a>
+	</footer>
+	<!-- FOOTER END -->
+	<script src="{% static "js/main/main.js" %}"></script>
+	{% block scripts %}
+	{% endblock %}
+</body>
+</html>

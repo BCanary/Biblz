@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}
+{% endblock %}
+
+{% block links %}
+<link href="{% static "css/user.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/bookblock.css"%}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block article %}
+<div class="books-wrapper">
+	<div class="books" id="books">
+		{% if books %}
+			{% for book in books %}
+				{{ book|safe }}
+			{% endfor %}
+		{% else %}
+			<h1 class="no-books-title">Книг нет</h1>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+
+{% block aside %}
+<h3 style="padding: 5px; margin: 0px;">Лучшие по рейтингу</h3>
+<ul class="best-books-ul">
+	{% if books %}
+		{% for book in best_books %}
+		<input type="checkbox" name="best_books" id="checkbox-book-{{ book.id }}" class="checkbox-best-book"></input>
+		<li class="best-books-li">
+			<div class="best-book" style="background-image: linear-gradient(#FFFFFFAA,#FFFFFFAA), url({{ book.book_cover.url  }})">
+				<div class="best-book-black"></div>
+				<div class="best-book-up">
+					{% if book.rating > 0 %}
+					<div class="book-rating" style="background-color: var(--green-positive);color: white;">{{ book.rating }}</div>
+					{% elif book.rating < 0 %}
+					<div class="book-rating" style="background-color: var(--red-negative);color: white;">{{ book.rating }}</div>
+					{% else %}
+					<div class="book-rating" style="background-color: var(--gray-main);color: black;">{{ book.rating }}</div>
+					{% endif %}
+					<div class="best-book-text-info">
+						<span class="best-book-name"><strong>{{ book.bookname }}</strong></span>
+						<span class="best-book-description"><strong>{{ book.description }}</strong></span>
+					</div>
+				</div>
+
+
+				<label class="checkbox-book-label" for="checkbox-book-{{ book.id }}"></label>
+				<div class="read-button-best-book-wrapper">
+					<a class="read-button-best-book" href="/book/{{ book.id }}">Читать</a>
+				</div>
+			</div>
+		</li>
+		{% endfor %}
+	{% else %}
+	<h1 class="no-books-title-right"><span class="no-books-title">Книг нет</span></h1>
+	{% endif %}
+</ul>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

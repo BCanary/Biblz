@@ -1,0 +1,123 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+{{ book.bookname }}
+{% endblock %}
+
+{% block links %}
+<link href="{% static "css/book.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/user.css" %}" rel="stylesheet" type="text/css">
+<style>
+</style>
+{% endblock %}
+
+{% block allpage %}
+<a  href="#bookreadera" onclick="centerBook()" class="center-book" id="center-book">Отцентрировать книгу</a>
+{% endblock %}
+
+{% block article %}
+<div class="book-info" style="background-image: linear-gradient(#FFFFFFCC,#FFFFFFCC), url({{ book.book_cover.url }})">
+	<a style="text-decoration: none; color: white;" href="/user/{{ book.writer.id }}" class="image-block">
+		<div class="profile-image-block">
+			<img style="height: {{ book.writer.profile_picture_height }}%;width: 100%;position: relative;top: -{{ book.writer.profile_picture_offset_y }}px;left: -{{ book.writer.profile_picture_offset_x }}px;" src="{{ book.writer.profile_picture.url }}"></img>
+		</div>
+		{% if book.writer.confirmed %}
+		<div class="confirmed">Подтверждён</div>
+		{% endif %}
+	</a>
+	<div class="bio-block">
+		<div class="full-name-block">
+			<h1>{{ book.bookname }}</h1>
+		</div>
+		<div class="username-block">
+			<span>{{ book.writer.first_name }} {{ book.writer.middle_name }} {{ book.writer.last_name }}</span>
+		</div>
+	</div>
+</div>
+<div class="description-block">{{ book.description }}</div>
+
+{% if book.writer.id == active_user.id %}
+<a class="download-book-button delete-book" style="text-decoration: none;" href="/api/deletebook/{{ book.id }}">Удалить книгу</a>
+{% endif %}
+
+<div style="display: none" id="book-buffer"></div>
+<!--<div style="display: none" id="book-buffer2"></div>-->
+<div id="bookreadera" style="height: 0;"></div>
+<div id="bookreader" class="book-reader" style="z-index: 13;">
+	<input type="checkbox" style="display: none;" id="show-sections-input" class="show-sections-input"></input>
+	<div class="change-page change-page-left" id="change-page-left" onclick="prevPage()"><i><</i></div>
+	<div class="change-page change-page-right" id="change-page-right" onclick="nextPage()"><i>></i></div>
+	<div class="reader-menu">
+		<div class="reader-menu-header">{{ book.bookname }}</div>
+		<div class="reader-menu-all-sections" id="reader-menu"></div>
+	</div>
+
+	<a href="#bookreadera" class="remove-a-decoration" onclick="hideHeader()">
+		<div class="book-reader-upblock">
+			<div class="book-reader-upblock-left">
+				<div class="bookname">{{ book.bookname }}</div>
+				<div class="book-page" style="display: none;"><span id="book-page">1</span>/<span id="page-count"></span></div>
+			</div>
+			<label for="show-sections-input" class="show-sections">
+				<div class="menu-pattern">
+					<div class="menu-pattern-line"></div>
+					<div class="menu-pattern-line"></div>
+					<div class="menu-pattern-line"></div>
+				</div>
+			</label>
+		</div>
+	</a>
+	<div class="book-reader-main" id="reader">{{ book.bookname }}</div>
+	<div class="upper-page book-reader-main" id="reader-up">{{ book.bookname }}</div>
+	<div class="change-part" id="change-part" onclick="nextSection()"><i></i></div>
+	<div class="upper-page book-reader-main cover-upper" id="reader-up-cover" style="background-image: linear-gradient(#000000AA,#000000AA), url({{ book.book_cover.url }});"><strong class="loading-text">{{ book.bookname }}</strong></div>
+</div>
+{% endblock %}
+
+{% block aside %}
+<div class="font-size-block">
+	<input class="hidden-input" id="reset-font" type="button" onclick="updateRange(16)">
+	<span class="font-size-block-text">Размер шрифта: <label class="font-size-value" id="font-size-value" for="reset-font" title="Восстановить шрифт">16</label></span>
+	<input type="range" min="6" max="32" step="1" value="16" class="font-size-range" id="font-size-range" oninput="updateRange()"> 
+</div>
+<div class="font-size-block">
+	<input class="hidden-input" id="reset-padding" type="button" onclick="updatePadding(10)">
+	<span class="font-size-block-text">Поля <label class="font-size-value" id="padding-size-value" for="reset-padding" title="Восстановить поля">10</label> процентов</span>
+	<input type="range" min="5" max="30" step="1" value="10" class="font-size-range" id="padding-size-range" oninput="updatePadding()"> 
+</div>
+<div class="book-color-changer">
+	<div class="wrapper-color-block">
+		<input style="display: none" name="change-color" type="radio" id="color-block-classic" class="color-block-input"  onclick="changeColor('classic');" checked></input> 
+		<label class="color-block classic-color" for="color-block-classic"></label>
+	</div>
+	<div class="wrapper-color-block">
+		<input style="display: none" name="change-color" type="radio" id="color-block-white-black" class="color-block-input" onclick="changeColor('white-black');"></input> 
+		<label class="color-block white-black-color" for="color-block-white-black"></label>
+	</div>
+	<div class="wrapper-color-block">
+		<input style="display: none" name="change-color" type="radio" id="color-block-black-white" class="color-block-input" onclick="changeColor('black-white');"></input> 
+		<label class="color-block black-white-color" for="color-block-black-white"></label>
+	</div>
+	<div class="wrapper-color-block">
+		<input style="display: none" name="change-color" type="radio" id="color-block-purple" class="color-block-input" onclick="changeColor('purple');"></input> 
+		<label class="color-block purple-color" for="color-block-purple"></label>
+	</div>
+</div>
+<div class="turn-read-mode">
+	<input class="turn-read-mode-checkbox" type="checkbox" style="display: none;" id="turn-read-mode-checkbox" onchange="changeReadMode()"></input>
+	<label class="turn-read-mode-label" for="turn-read-mode-checkbox"></label><span class="trm-span">режим страниц β</span>
+</div>
+<div class="turn-read-mode">
+	<input class="turn-read-mode-checkbox black-mode" type="checkbox" style="display: none;" id="turn-black-mode-checkbox" onchange="changeBlackMode()"></input>
+	<label class="turn-read-mode-label" for="turn-black-mode-checkbox"></label><span class="trm-span">режим чтения</span>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+	book_id = {{ book.id }};
+</script>
+<script src="{% static "js/api_script.js"%}"></script>
+<script src="{% static "js/book/book_reader.js"%}"></script>
+{% endblock %}

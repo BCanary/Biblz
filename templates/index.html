@@ -1,0 +1,45 @@
+{% extends "wrapper.html" %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}</title>
+	
+{% block links %}
+{% endblock %}
+
+{% block main %}
+	<!-- HEADER START -->
+	
+	<nav>
+		<ul class="nav-ul">
+			<li class="nav-li" style="border-radius: 0 0 0 10px;"><a class="nav-li-a" href="/">Главная</a></li>
+			<li class="nav-li">Каталог</li>
+			<li class="nav-li" style="border-radius: 0 0 10px 0"><a class="nav-li-a" href="/api/profile_redirect">Профиль</a></li>
+		</ul>
+	</nav>
+	{% block setings %}
+	{% endblock %}
+	<!-- HEADER END -->
+
+	<!-- CENTER START -->
+	<div class="center">
+		<div class="center-margin">
+			<article>
+				{% block article %}
+				Standart article
+				{% endblock %}
+			</article>
+			<div class="right-center-aside">
+				<aside id="aside">
+					{% block aside %}
+					Aside
+					{% endblock %}
+				</aside>
+			</div>
+		</div>
+	</div>
+	<!-- CENTER END -->
+
+	{% endblock %}
+
+	{% block scripts %}
+	{% endblock %}

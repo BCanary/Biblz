@@ -1,0 +1,87 @@
+{% extends "wrapper.html"%}
+{% load static %}
+{% block links %}
+<link href="{% static "css/main_page.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/bookblock.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/user.css" %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block title %}Главная{% endblock %}
+
+{% block main %}
+<nav>
+		<ul class="nav-ul">
+			<li class="nav-li" style="border-radius: 0 0 0 10px;"><a class="nav-li-a" href="/">Главная</a></li>
+			<li class="nav-li"><a class="nav-li-a" href="/catalog">Каталог</a></li>
+			<li class="nav-li" style="border-radius: 0 0 10px 0"><a class="nav-li-a" href="/api/profile_redirect">Профиль</a></li>
+		</ul>
+	</nav>
+<div class="main-block" style="background-size: 1920px auto; background-image: linear-gradient(to bottom, #FFFFFFCC, #FFFFFFFF), url({% static "images/logo.svg" %})">
+	<div class="main-block-left">
+		<div class="main-name fade"><strong>Электронная библиотека "Библз"</strong></div>
+	</div>
+	<div class="main-block-right fade">
+		<!-- <img class="big-logo" src="{% static "images/big_logo.png" %}" alt="logo"></img> -->
+		
+			{% if not logged_in %}
+			<div class="registration-login">
+				<a href="#"><input onclick="showLogin()" type="button" name="login" class="default-input-button main-block-reg-btn" value="Войти"></a>
+				<a href="#"><input onclick="showRegistration()" type="button" name="regestration" class="default-input-button main-block-reg-btn" value="Зарегистрироваться"></a>
+			</div>
+			{% else %}
+			<div class="user-main-center">
+				<div style="background-image: url({{ active_user.profile_picture.url }}); background-size: auto 100%;" class="user-profile-picture-main"></div>
+			</div>
+			{% endif %}
+	</div>
+</div>
+<div class="content-main-page">
+	<div class="best-books">
+		<h1 class="best-block-title">Недавно добавленные</h1>
+		<div class="best-block whats-new">
+			<div class="books-wrapper">
+				<!-- <div class="slider-btn slider-btn-left">-</div>
+				<div class="slider-btn slider-btn-right">-</div>-->
+				{% for book in new_books %}
+					{{ book|safe }}
+				{% endfor %}
+			</div>
+		</div>
+
+		<h1 class="best-block-title">Лучшие по рейтингу</h1>
+		<div class="best-block intresting">
+			<div class="books-wrapper">
+				{% for book in best_books %}
+					{{ book|safe }}
+				{% endfor %}
+			</div>
+		</div>
+		<h1 class="best-block-title">Лучшие авторы</h1>
+		<div class="best-block best-authors">
+			
+			<div class="best-authors-block">
+				{% for user in best_users %}
+					<input type="radio" name="authors" style="display: none;" class="show-author-info" id="show-author-info-{{ user.id }}">
+					<label class="author-block image-block" for="show-author-info-{{ user.id }}">
+						<div class="autor-info-block">
+							<div class="full-name-block">
+								<h4>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</h4>
+							</div>
+							<div class="username-block">
+								<span class="username">{{ user.username }}</span><a style="text-decoration: none; color: white; " class="watch" href="/user/{{ user.id }}">Смотреть</a>
+							</div>
+						</div>
+						<div style="text-decoration: none; color: white; position: relative;" href="/user/{{ user.id }}" class="profile-image-block">
+							<img style="height: {{ user.profile_picture_height }}%;width: 100%;position: relative;top: -{{ user.profile_picture_offset_y }}px;left: -{{ user.profile_picture_offset_x }}px;" src="{{ user.profile_picture.url }}"></img>
+						</div>
+						{% if user.confirmed %}
+						<div class="confirmed">Подтверждён</div>
+						{% endif %}
+					</label>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

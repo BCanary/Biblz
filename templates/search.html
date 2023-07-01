@@ -1,0 +1,101 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}
+{% endblock %}
+
+{% block links %}
+<link href="{% static "css/user.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/bookblock.css"%}" rel="stylesheet" type="text/css">
+<link href="{% static "css/main_page.css"%}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block article %}
+{% if books %}
+	<div class="user-info book-search-info" style="background-image: linear-gradient(#FFFFFFAA,#FFFFFFAA), url({{ background  }}); background-size: 100% auto; background-position: center;">
+		<b>{{ query }}</b>
+	</div>
+{% else %}
+	<div class="user-info book-search-info" style="background-image: linear-gradient(#FFFFFFAA,#FFFFFFAA), url({% static "images/not_found.png" %}); background-size: 100% auto; background-position: center;">
+		<b>{{ query }}</b>
+	</div>
+{% endif %}
+<div class="books-wrapper">
+	<div class="books" style="justify-content: center; height: 300px;">
+		{% if writers %}
+			{% for user in writers %}
+						<label class="author-block image-block" for="show-author-info-{{ user.id }}" style="margin: 0px 20px 20px 0px;">
+							<div style="text-decoration: none; color: white; position: relative;" href="/user/{{ user.id }}" class="profile-image-block">
+								<img style="height: {{ user.profile_picture_height }}%;width: 100%;position: relative;top: -{{ user.profile_picture_offset_y }}px;left: -{{ user.profile_picture_offset_x }}px;" src="{{ user.profile_picture.url }}"></img>
+							</div>
+							{% if user.confirmed %}
+							<div class="confirmed">Подтверждён</div>
+							{% endif %}
+							<div class="author-info-block">
+								<div class="full-name-block">
+									<h4>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</h4>
+								</div>
+								<div class="username-block">
+									<span class="username">{{ user.username }}</span><a style="text-decoration: none; color: white; " class="watch" href="/user/{{ user.id }}">Смотреть</a>
+								</div>
+							</div>
+						</label>
+			{% endfor %}
+		{% else %}
+			<h1 class="no-books-title">Писателей нет</h1>
+		{% endif %}
+	</div>
+</div>
+<div class="books-wrapper">
+	<div class="books">
+		{% if books %}
+			{% for book in books %}
+				{{ book|safe }}
+			{% endfor %}
+		{% else %}
+			<h1 class="no-books-title">Книг нет</h1>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+
+{% block aside %}
+<h3 style="padding: 5px; margin: 0px;">Лучшие по рейтингу</h3>
+<ul class="best-books-ul">
+	{% if books %}
+		{% for book in best_books %}
+		<input type="checkbox" name="best_books" id="checkbox-book-{{ book.id }}" class="checkbox-best-book"></input>
+		<li class="best-books-li">
+			<div class="best-book" style="background-image: linear-gradient(#FFFFFFAA,#FFFFFFAA), url({{ book.book_cover.url  }})">
+				<div class="best-book-black"></div>
+				<div class="best-book-up">
+					{% if book.rating > 0 %}
+					<div class="book-rating" style="background-color: var(--green-positive);color: white;">{{ book.rating }}</div>
+					{% elif book.rating < 0 %}
+					<div class="book-rating" style="background-color: var(--red-negative);color: white;">{{ book.rating }}</div>
+					{% else %}
+					<div class="book-rating" style="background-color: var(--gray-main);color: black;">{{ book.rating }}</div>
+					{% endif %}
+					<div class="best-book-text-info">
+						<span class="best-book-name"><strong>{{ book.bookname }}</strong></span>
+						<span class="best-book-description"><strong>{{ book.description }}</strong></span>
+					</div>
+				</div>
+
+
+				<label class="checkbox-book-label" for="checkbox-book-{{ book.id }}"></label>
+				<div class="read-button-best-book-wrapper">
+					<a class="read-button-best-book">Читать</a>
+				</div>
+			</div>
+		</li>
+		{% endfor %}
+	{% else %}
+	<h1 class="no-books-title-right"><span class="no-books-title">Книг нет</span></h1>
+	{% endif %}
+</ul>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

@@ -1,0 +1,15 @@
+<input type="radio" name="books" class="checkbox-book" id="book-checkbox-{{ book.id }}-{{ index }}"></input>
+<label class="book-wrapper" for="book-checkbox-{{ book.id }}-{{ index }}">
+	<div class="book-incard book-front" style="background-image: linear-gradient(#FFFFFFAA,#FFFFFFAA), url({{ book.book_cover.url }})">
+		<div class="black"></div>
+		<h3 class="book-name"><strong>{{ book.bookname }}</strong></h3>
+	</div>
+	<!-- <label class="label-book" for="book-checkbox-{{ book.id }}"></label> -->
+	<div class="book-incard back-book" style="background-image: linear-gradient(#FFFFFFAA,#FFFFFFAA), url({{ book.book_cover.url }})">
+		<div class="back-black"></div>
+		<span class="book-description"><strong>{{ book.description }}</strong></span>
+		<div class="read-button-book-wrapper">
+			<a href="/book/{{book.id}}" class="read-button-book remove-a-decoration">Читать</a>
+		</div>
+	</div>	
+</label>

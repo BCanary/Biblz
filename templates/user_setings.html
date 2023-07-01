@@ -1,0 +1,54 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+Настройки профиля
+{% endblock %}
+
+{% block links %}
+<link href="{% static "css/user.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/bookblock.css"%}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block article %}
+<form action="/api/settings" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="user-info">
+		<div class="image-block">
+			<input style="display: none" name="profile-image" type="file" accept="image/jpeg,image/png" id="select-image">
+			<label class="profile-image-block edit-profile-image" for="select-image">
+				<img style="height: {{ active_user.profile_picture_height }}%;width: auto;position: relative;top: -{{ active_user.profile_picture_offset_y }}px;left: -{{ active_user.profile_picture_offset_x }}px;" src="{{ active_user.profile_picture.url }}" id="profile-image-image"></img>
+				<img class="camera-decoration" src="{% static "images/camera.svg" %}"></img>
+			</label>
+			{% if active_user.confirmed %}
+			<div class="confirmed">Подтверждён</div>
+			{% endif %}
+		</div>
+		<div class="bio-block">
+			<div class="full-name-block">
+				<input type="input" name="first-name" class="name-input" value="{{ active_user.first_name }}" placeholder="Имя"></input>
+				<input type="input" name="middle-name" class="name-input" value="{{ active_user.middle_name }}" placeholder="Отчество"></input>
+				<input type="input" name="last-name" class="name-input" value="{{ active_user.last_name }}" placeholder="Фамилия"></input>
+			</div>
+			<div class="username-block">
+				<span>{{ active_user.username }}</span><span style="color: gray"> - ваш логин, его изменить нельзя</span>
+			</div>
+		</div>
+	</div>
+	<div class="setings-block">
+		<input type="input" name="mail" class="block-input" value="{{ active_user.mail }}" placeholder="Почта"></input>
+		<input type="textarea" name="description" placeholder="Описание профиля" class="description-block description-block-input" value="{{ active_user.description }}"></input>
+	</div>
+	<div class="save-wrapper">
+		<input type="submit" class="default-input-button save" value="Сохранить"/>
+	</div>
+</form>
+{% endblock %}
+
+{% block aside %}
+<h3 style="padding: 5px; margin: 0px;">Настройки</h3>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static "js/user/settings.js" %}"></script>
+{% endblock %}

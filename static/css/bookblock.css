@@ -1,0 +1,348 @@
+html {
+	--book-block-size: 220px;
+	--book-margin-block-size: 220px;
+}
+
+@media (max-width: 1200px) {
+	html {
+		--book-block-size: 70vw;
+	}
+
+	.book-description {
+		font-size: 2em;
+	}
+
+	.book-name {
+		font-size: 3em;
+	}
+}
+
+/* books start */
+.books-wrapper {
+	width: 100%;
+	display: flex;
+	margin-top: 50px;
+	justify-content: center;
+	overflow-x: hidden;
+}
+.books {
+	display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+	min-height: var(--book-block-size);
+	justify-content: flex-start;
+	width: 100%;
+}
+
+.book-wrapper {
+	min-width: var(--book-block-size);
+	min-height: var(--book-block-size);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	margin: 20px;
+}
+
+.book-incard {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	transition: 1s;
+	overflow: hidden;
+	background-position: center;
+	backface-visibility: hidden;
+	cursor: pointer;
+}
+
+.book-front {
+	background-size: 100% auto;
+	z-index: 1;
+}
+.back-book {
+	transform: rotateY(-180deg);
+	z-index: 0;
+
+	background-size: 200% auto;
+	font-size: 0.9em;
+}
+.book-description {
+	color: black;
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: justify;
+	transition: 1s;
+	box-sizing: border-box;
+	height: 100%;
+	width: 100%;
+	padding: 15px 15px 35px 15px;
+	backface-visibility: hidden;
+}
+
+.book-description > strong {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	overflow-y: scroll;
+}
+
+.book-description > strong::-webkit-scrollbar { width: 0; }
+
+.read-button-book-wrapper {
+	width: var(--book-margin-block-size);
+	bottom: 0px;
+	width: 100%;
+	height: 20%;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	z-index: 10;
+}
+.read-button-book {
+	text-align: center;
+	width:  60%;
+	height: 100%;
+	padding: 5px;
+	border-radius: 10px 10px 0px 0px;
+	color: white;
+	background-color: var(--blue-button);
+	z-index: 11;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5em;
+}
+.read-button-book:hover {
+	background-color: var(--blue-button-dark);
+}
+.checkbox-book:checked + .book-wrapper > .book-front {
+	transform: rotateY(180deg);
+}
+.checkbox-book:checked + .book-wrapper > .back-book {
+	transform: rotateY(0deg);
+}
+.black {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #FFFFFF00;
+	transition: 1s;
+	z-index: 1;
+}
+.back-black {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #00000000;
+	transition: 1s;
+	z-index: 1;
+}
+.book-name {
+	margin: 4px;
+	margin-top: 10px;
+	color: black;
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	transition: 1s;
+}
+.book-wrapper:hover > .book-incard > .black {
+	background-color: #000000BB;
+}
+.book-wrapper:hover > .book-incard > .book-name {
+	color: white;
+}
+.book-wrapper:hover > .back-book > .back-black {
+	background-color: #000000BB;
+}
+.book-wrapper:hover > .back-book > .book-description {
+	color: white;
+}
+.checkbox-book {
+	display: none;
+}
+.label-book {
+	position: absolute;
+	cursor: pointer;
+	z-index: 0;
+	width: var(--book-margin-block-size);
+	height: var(--book-margin-block-size);
+}
+
+
+/* BEST BOOK BLOCK */
+.best-books-ul {
+	display: flex;
+	margin: 0px;
+	padding: 0px;
+	flex-direction: column;
+}
+
+.best-books-li {
+	width: 100%;
+	height: 55px;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	margin-top: 10px;
+	display: flex;
+	justify-content: center;
+	transition: 1s;
+}
+.best-books-li:hover > .best-book {
+	color: white;
+}
+.best-book-li:hover > .best-book > .best-book-black {
+	background-color: #000000BB;
+}
+.best-book-black {
+	position: absolute;
+	transition: 1s;
+	background-color: #FFFFFF00;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
+.best-book:hover > .best-book-black {
+	background-color: #000000BB;
+}
+.best-book {
+	height: 100%;
+	width: 95%;
+	overflow: hidden;
+	background-size: 100% auto;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	z-index: 1;
+}
+.best-book-up {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.best-book-text-info {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	justify-content: center;
+}
+.best-book-name {
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	display: flex;
+	transition: 1s;
+	position: relative;
+	z-index: 1;
+	top: 0px;
+}
+.book-rating {
+	height: 100%;
+	width: 20px;
+	padding: 0px 10px 0px 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	left: -40px;
+	transition: 1s;
+	z-index: 2;
+}
+.best-book:hover > .best-book-up > .book-rating {
+	left: 0px;
+}
+
+
+.checkbox-best-book {
+	display: none;
+}
+.checkbox-book-label {
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 5;
+}
+
+.best-book-description {
+	transition: 1s;
+	position: absolute;
+	z-index: 0;
+	top: 200px;
+	text-align: center;
+	height: 120px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 0.9em;
+}
+
+.read-button-best-book-wrapper {
+	height: 40px;
+	width: 100%;
+	color: black;
+	cursor: pointer;
+	position: absolute;
+	bottom: -40px;
+	transition: 1s;
+	z-index: 5;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.read-button-best-book {
+	height: 100%;
+	width: 70%;
+	background-color: var(--blue-button);
+	color: white;
+	cursor: pointer;
+	border-radius: 10px 10px 0px 0px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.read-button-best-book:hover {
+	background-color: var(--blue-button-dark);
+}
+
+.checkbox-best-book:checked + li:hover > div > .read-button-best-book-wrapper  {
+	bottom: 0px;
+}
+.checkbox-best-book:checked + li:hover > div > .best-book-up > .best-book-text-info > .best-book-description {
+	top: 10px;
+}
+.checkbox-best-book:checked + li:hover > div > .best-book-up > .best-book-text-info > .best-book-name {
+	top: -200px;
+}
+.checkbox-best-book:checked + li:hover {
+	height: 300px;
+}
+.checkbox-best-book:checked + li:hover > div > .best-book-up > .book-rating {
+	left: -40px;
+}
+.checkbox-best-book:checked + li:hover > div > .best-book-up > .book-rating {
+	left: -40px;
+}
+/* books end */
+
+@media (max-width: 1200px) {
+	.books {
+		justify-content: center;
+	}
+}

@@ -1,0 +1,7 @@
+beautifulsoup4
+django
+pillow
+gunicorn
+whitenoise
+dj-database-url
+lxml

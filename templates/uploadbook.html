@@ -1,0 +1,50 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+Загрузить книгу
+{% endblock %}
+
+{% block links %}
+<link href="{% static "css/user.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/bookblock.css"%}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block article %}
+<form action="/api/uploadbook" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="user-info">
+		<div class="image-block">
+			<input style="display: none" name="book-cover" type="file" accept="image/jpeg,image/png" id="select-image">
+			<label class="profile-image-block edit-profile-image" for="select-image">
+				<img src="{% static "images/not_found.png" %}" style="width: auto; height: 100%;"  id="profile-image-image"></img>
+				<img class="camera-decoration" src="{% static "images/camera.svg" %}"></img>
+			</label>
+		</div>
+		<div class="bio-block">
+			<div class="full-name-block">
+				<input type="input" name="bookname" class="name-input" value="" placeholder="Название книги" style="width: 300px;"></input>
+			</div>
+			<!--<div class="username-block">
+				<span>{{ active_user.username }}</span><span style="color: gray"> - ваш логин, его изменить нельзя</span>
+			</div> !-->
+		</div>
+	</div>
+	<div class="setings-block">
+		<input type="file" id="book-file" style="width: auto;" accept=".fb2" name="book-file" class="block-input"> Файл книги (*.fb2)</input>
+		<input type="textarea" name="description" placeholder="Описание книги" class="description-block description-block-input"></input>
+	</div>
+	<div class="save-wrapper">
+		<input type="submit" class="default-input-button save" value="Сохранить"/>
+	</div>
+</form>
+{% endblock %}
+
+{% block aside %}
+<h3 style="padding: 5px; margin: 0px;">Загрузка книги</h3>
+<p>Здесь вы можете загрузить свою книгу</p>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static "js/user/settings.js" %}"></script>
+{% endblock %}
